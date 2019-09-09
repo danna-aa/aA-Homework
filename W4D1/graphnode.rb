@@ -14,7 +14,6 @@ class GraphNode
     def bfs(starting_node, target_value)
         queue = [starting_node]
         visited = []
-        path = []
         until queue.empty?
             node = queue.shift
             if node.value == target_value
