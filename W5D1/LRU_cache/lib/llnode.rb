@@ -12,8 +12,8 @@ class LinkedListNode
         @nxt = value
     end
 
-    # def inspect
-    #     {"value"=>@value, "next"=>@nxt, "previous"=>@prv}.inspect
-    # end
+    def inspect
+        {"value"=>@value}
+    end
 
 end

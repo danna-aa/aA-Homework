@@ -8,8 +8,30 @@ class LinkedList
         @head = LinkedListNode.new(nil, nil, nil)
     end
 
-    def include?(node)
+    def list 
         current_node = @head
+        arr = [current_node]
+        until current_node.nxt == nil
+            arr << current_node.nxt
+            current_node = current_node.nxt
+        end
+        arr
+    end
+
+    def tail
+        if @head.nxt == nil
+            return @head
+        end
+        current_node = @head.nxt
+        while current_node != nil
+            last_node = current_node
+            current_node = current_node.nxt
+        end
+        return last_node
+    end
+
+    def include?(node)
+        current_node = @head.nxt
         while current_node != nil
             if node == current_node
                 return true
@@ -21,7 +43,8 @@ class LinkedList
 
     def count 
         count = 0
-        current_node = @head
+        return 0 if @head.nxt == nil
+        current_node = @head.nxt
         while current_node != nil
             count += 1
             current_node = current_node.nxt 
@@ -34,13 +57,10 @@ class LinkedList
     end
 
     def push(node)
-        current_node = @head
-        until current_node == nil
-            last_node = current_node
-            current_node = current_node.nxt
-        end
-        last_node.nxt = node
-        node.prv = last_node
+        last = self.tail
+        last.nxt = node
+        node.prv = last
+        list
     end
 
     def <<(node)
@@ -48,24 +68,21 @@ class LinkedList
     end
 
     def pop
-        current_node = @head
-        until current_node == nil
-            last_node = current_node
-            two_nodes_before = last_node.prv
-            current_node = current_node.next
-        end
-        last_node.nxt = nil
-        last_node.prv = nil
-        two_nodes_before.nxt = nil
+        popped = tail
+        new_last = tail.prv
+        tail.prv = nil
+        new_last.nxt = nil
+        popped
     end
 
     def unshift(node)
-        current_node = @head
-        next_node = current_node.nxt
-        @head.nxt = node
-        node.prv = @head
-        current_node.prv = node
-        node.nxt = current_node
+        left_node = @head
+        right_node = @head.nxt
+        left_node.nxt = node
+        node.prv = left_node
+        right_node.prv = node
+        node.nxt = right_node
+        list
     end
 
     def shift
@@ -75,13 +92,15 @@ class LinkedList
         deleted.nxt = nil
         @head.nxt = next_node
         next_node.prv = @head
+        deleted
     end
 
     def insert(node, next_node)
-        current_node = @head
+        raise "list is empty" if @head.nxt == nil
+        current_node = @head.nxt
         until current_node == next_node
             last_node = last_node.prv
-            current_node = current_node.next
+            current_node = current_node.nxt
         end
         current_node.prv = node
         node.nxt = current_node
@@ -93,7 +112,7 @@ class LinkedList
         current_node = @head
         until current_node == node
             last_node = current_node.prv
-            next_node = current_node.next
+            next_node = current_node.nxt
         end
         last_node.nxt = next_node
         next_node.prv = last_node
@@ -101,9 +120,44 @@ class LinkedList
         current_node.prv = nil
     end
 
+    def inspect
+        list
+    end
+
 end
 
-# ll = LinkedList.new
-# p ll
-# ll.push(LinkedListNode.new("mario"))
-# p ll
+ll = LinkedList.new
+mario = LinkedListNode.new("mario")
+ll << mario
+# p ll.tail
+# p ll.list
+# p ll.tail
+
+# # p ll.tail
+luigi = LinkedListNode.new("luigi")
+ll.push(luigi)
+# # p ll.tail
+peach = LinkedListNode.new("peach")
+ll.push(peach)
+# # p ll.tail
+# # p ll.include?(luigi)
+# # p ll.count
+# # p ll.length
+bowser = LinkedListNode.new("bowser")
+ll << bowser
+# # p ll
+# # p ll.tail
+# # mario = LinkedListNode.new("mario", nil, nil)
+# # ll.push(mario)
+# # p ll
+# p ll.pop
+# p ll.tail
+p ll.list
+toad = LinkedListNode.new("toad")
+ll.unshift(toad)
+p ll.list
+p ll.shift
+p ll.list
+p ll
+goomba = LinkedListNode.new("goomba")
+ll.insert()
